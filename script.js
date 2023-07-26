@@ -35,15 +35,19 @@ let divideByZero = 0;
 let currOperated = 0;
 
 function dlt() {
-    if (screen.textContent != 0 && screen.textContent.length == 1) {
-        screen.textContent = 0;
-        firstOperand = 0;
-    }
-    else if (screen.textContent.length > 1) {
-        let arrChar = screen.textContent.split('');
-        arrChar.splice(screen.textContent.length - 1, 1);
-        screen.textContent = arrChar.join('');
-        firstOperand = Number(screen.textContent);
+    if (currStage == 1 || currStage == 3) {
+        if (screen.textContent != 0 && screen.textContent.length == 1) {
+            screen.textContent = 0;
+            if (currStage == 1) firstOperand = 0;
+            else secondOperand = 0;
+        }
+        else if (screen.textContent.length > 1) {
+            let arrChar = screen.textContent.split('');
+            arrChar.splice(screen.textContent.length - 1, 1);
+            screen.textContent = arrChar.join('');
+            if (currStage == 1) firstOperand = Number(screen.textContent);
+            else secondOperand = Number(screen.textContent);;
+        }
     }
 }
 
@@ -107,10 +111,8 @@ function computeClick() {
         operator = currKey;
     }
     else if (currStage == 3 && !hasOperator) {
-        let arrChar = screen.textContent.split(operator);
-        arrChar[1] += currKey;
-        secondOperand = Number(arrChar[1]);
-        screen.textContent = arrChar.join(operator);
+        screen.textContent += currKey;
+        secondOperand = Number(screen.textContent);
     }
     else if (currStage == 3 && currKey === '=') {
         screen.textContent = +operate(operator, firstOperand, secondOperand).toFixed(3);
@@ -129,7 +131,11 @@ function computeClick() {
         currStage = 2;
     }
 
-    screenStatic.textContent = screenStatic.textContent.replace('*', '×');
+    screenStatic.textContent = screenStatic.textContent.
+    /*let arrChar = screen.textContent.split(operator);
+    arrChar[1] += currKey;
+    secondOperand = Number(arrChar[1]);
+    screen.textContent = arrChar.join(operator);*/replace('*', '×');
     screenStatic.textContent = screenStatic.textContent.replace('/', '÷');
 }
 
@@ -144,5 +150,6 @@ let currEvent;
 document.addEventListener("keydown", (e) => {
     currEvent = e;
     e.preventDefault();
+    if (e.key === 'Delete') dlt();
     computeClick();
 });
