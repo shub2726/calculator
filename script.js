@@ -27,13 +27,15 @@ function operate(optr, opnd1, opnd2) {
     else if (optr === '/') return divide(opnd1, opnd2);
 }
 
-const screen = document.querySelector('.screen');
+const screen = document.querySelector('.screen .curr-display');
 let operator, firstOperand = 0, secondOperand;
 let currStage = 0;
 let divideByZero = 0;
+let currOperated = 0;
 
 function clear() {
     firstOperand = 0;
+    currOperated = 0;
     currStage = 0;
     screen.textContent = 0;
 }
@@ -71,7 +73,11 @@ function computeClick() {
         operator = currKey;
     }
     else if (currStage == 1 && !hasOperator) {
-        screen.textContent += currKey;
+        if (currOperated) {
+            currOperated = 0;
+            screen.textContent = currKey;
+        }
+        else screen.textContent += currKey;
         firstOperand = Number(screen.textContent);
     }
     else if (currStage == 2 && !hasOperator) {
@@ -95,6 +101,7 @@ function computeClick() {
         screen.textContent = +operate(operator, firstOperand, secondOperand).toFixed(3);
         if (divideByZero) return;
         firstOperand = Number(screen.textContent);
+        currOperated = 1;
         currStage = 1;
     }
     else if (currStage == 3 && hasOperator) {
@@ -116,5 +123,6 @@ document.querySelector('#clear').addEventListener('click', clear);
 let currEvent;
 document.addEventListener("keydown", (e) => {
     currEvent = e;
+    e.preventDefault();
     computeClick();
 });

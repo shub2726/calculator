@@ -3,10 +3,59 @@ body {
     justify-content: center;
 }
 
-
+.container {
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 30px;
+    margin: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
 
 .screen {
-    height: 50px; 
-    width: 200px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 15px;
+    height: 85px;
     border: 2px solid black;
+    border-radius: 5px;
+}
+
+.curr-display {
+    font-size: 30px;
+}
+
+.keys {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    flex: 1;
+}
+
+.row {
+    display: flex;
+    gap: 0.5em;
+    flex: 1;
+}
+
+.big-button {
+    flex: 1 0 0;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.button {
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+}
+
+.button.operator {
+    border-radius: 20px;
+}
+
+button:hover {
+    cursor: pointer;
 }
