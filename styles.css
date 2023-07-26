@@ -1,3 +1,10 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+
+
 .screen {
     height: 50px; 
     width: 200px;

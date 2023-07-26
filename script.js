@@ -49,6 +49,7 @@ function computeClick() {
     let hasOperator = 0;
 
     if (currKey == '*' || currKey == '-' || currKey == '+' || currKey == '/' || currKey == '=' || currKey == '.') hasOperator = 1;
+    if (!hasOperator && +currKey != currKey) return;
 
     if (!hasOperator && currKey != '.') currKey = Number(currKey);
 
