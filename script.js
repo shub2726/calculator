@@ -69,12 +69,10 @@ function computeClick() {
 
     let hasOperator = 0;
 
-    if (currKey == '*' || currKey == '-' || currKey == '+' || currKey == '/' || currKey == '=' || currKey == '.') hasOperator = 1;
-    if (!hasOperator && +currKey != currKey) return;
-
+    if (currKey == '*' || currKey == '-' || currKey == '+' || currKey == '/' || currKey == '=') hasOperator = 1;
+    if (!hasOperator && +currKey != currKey && currKey != '.') return;
     if (!hasOperator && currKey != '.') currKey = Number(currKey);
-
-    if (currStage != 3 && currKey == '=' || currKey === '.' && screen.textContent.includes('.')) return;
+    if ((currStage != 3 && currKey == '=') || (currKey === '.' && screen.textContent.includes('.'))) return;
 
     if (currStage == 0 && !hasOperator) {
         screen.textContent = currKey;
@@ -130,12 +128,7 @@ function computeClick() {
         operator = currKey;
         currStage = 2;
     }
-
-    screenStatic.textContent = screenStatic.textContent.
-    /*let arrChar = screen.textContent.split(operator);
-    arrChar[1] += currKey;
-    secondOperand = Number(arrChar[1]);
-    screen.textContent = arrChar.join(operator);*/replace('*', '×');
+    screenStatic.textContent = screenStatic.textContent.replace('*', '×');
     screenStatic.textContent = screenStatic.textContent.replace('/', '÷');
 }
 
