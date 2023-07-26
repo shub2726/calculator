@@ -150,6 +150,7 @@ let currEvent;
 document.addEventListener("keydown", (e) => {
     currEvent = e;
     e.preventDefault();
-    if (e.key === 'Delete') dlt();
+    if (e.key === 'Delete') clear();
+    else if (e.key === 'Backspace') dlt();
     computeClick();
 });
