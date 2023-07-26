@@ -28,15 +28,30 @@ function operate(optr, opnd1, opnd2) {
 }
 
 const screen = document.querySelector('.screen .curr-display');
+const screenStatic = document.querySelector('.screen .static-display');
 let operator, firstOperand = 0, secondOperand;
 let currStage = 0;
 let divideByZero = 0;
 let currOperated = 0;
 
+function dlt() {
+    if (screen.textContent != 0 && screen.textContent.length == 1) {
+        screen.textContent = 0;
+        firstOperand = 0;
+    }
+    else if (screen.textContent.length > 1) {
+        let arrChar = screen.textContent.split('');
+        arrChar.splice(screen.textContent.length - 1, 1);
+        screen.textContent = arrChar.join('');
+        firstOperand = Number(screen.textContent);
+    }
+}
+
 function clear() {
     firstOperand = 0;
     currOperated = 0;
     currStage = 0;
+    screenStatic.textContent = "";
     screen.textContent = 0;
 }
 
@@ -63,12 +78,12 @@ function computeClick() {
         firstOperand = currKey;
     }
     else if (currStage == 0 && hasOperator) {
-        screen.textContent += currKey;
+        screenStatic.textContent = screen.textContent + currKey;
         currStage = 2;
         operator = currKey;
     }
     else if (currStage == 1 && hasOperator) {
-        screen.textContent += currKey;
+        screenStatic.textContent = screen.textContent + currKey;
         currStage = 2;
         operator = currKey;
     }
@@ -81,14 +96,14 @@ function computeClick() {
         firstOperand = Number(screen.textContent);
     }
     else if (currStage == 2 && !hasOperator) {
-        screen.textContent += currKey;
+        screen.textContent = currKey;
         currStage = 3;
         secondOperand = currKey;
     }
     else if (currStage == 2 && hasOperator) {
-        let arrChar = screen.textContent.split('');
-        arrChar.splice(screen.textContent.length - 1, 1, currKey);
-        screen.textContent = arrChar.join('');
+        let arrChar = screenStatic.textContent.split('');
+        arrChar.splice(screenStatic.textContent.length - 1, 1, currKey);
+        screenStatic.textContent = arrChar.join('');
         operator = currKey;
     }
     else if (currStage == 3 && !hasOperator) {
@@ -99,6 +114,7 @@ function computeClick() {
     }
     else if (currStage == 3 && currKey === '=') {
         screen.textContent = +operate(operator, firstOperand, secondOperand).toFixed(3);
+        screenStatic.textContent = "";
         if (divideByZero) return;
         firstOperand = Number(screen.textContent);
         currOperated = 1;
@@ -106,12 +122,15 @@ function computeClick() {
     }
     else if (currStage == 3 && hasOperator) {
         screen.textContent = +operate(operator, firstOperand, secondOperand).toFixed(4);
+        screenStatic.textContent = screen.textContent + currKey;
         if (divideByZero) return;
         firstOperand = Number(screen.textContent);
-        screen.textContent += currKey;
         operator = currKey;
         currStage = 2;
     }
+
+    screenStatic.textContent = screenStatic.textContent.replace('*', '×');
+    screenStatic.textContent = screenStatic.textContent.replace('/', '÷');
 }
 
 document.querySelectorAll('.button').forEach(button => {
@@ -119,6 +138,7 @@ document.querySelectorAll('.button').forEach(button => {
 })
 
 document.querySelector('#clear').addEventListener('click', clear);
+document.querySelector('#delete').addEventListener('click', dlt);
 
 let currEvent;
 document.addEventListener("keydown", (e) => {
